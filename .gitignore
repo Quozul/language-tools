@@ -1,0 +1,39 @@
+# Dependencies / virtualenvs
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.egg-info/
+
+# Build outputs
+.next/
+out/
+build/
+*.tsbuildinfo
+next-env.d.ts
+
+# Caches
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+coverage/
+
+# Env files (opt-in committing if needed)
+.env
+.env*
+!.env.example
+
+# Editors / OS
+.idea/
+.DS_Store
+*.pem
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Large generated data assets (re-download via scripts/download_assets.py)
+services/transliterate/data/*.json

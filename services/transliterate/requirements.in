@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+fugashi
+jaconv
+pydantic-settings
+unidic

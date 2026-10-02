@@ -1,0 +1,35 @@
+services:
+  translate:
+    build: ./apps/translate
+    image: qzl-translate:dev
+    expose:
+      - "3000"
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      OPENAI_BASE_URL: ${OPENAI_BASE_URL:-http://host.docker.internal:9931/v1}
+      TRANSLITERATE_API_URL: http://transliterate:8000
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      transliterate:
+        condition: service_healthy
+    restart: unless-stopped
+
+  transliterate:
+    build: ./services/transliterate
+    image: qzl-transliterate:dev
+    expose:
+      - "8000"
+    environment:
+      QZL_WORKERS: "2"
+      QZL_MAX_TEXT_LENGTH: "5000"
+    # Full UniDic plus the JmdictFurigana lookups need headroom.
+    mem_limit: 2g
+    restart: unless-stopped
+
+  language-detection:
+    build: ./services/language-detection
+    image: qzl-language-detection:dev
+    expose:
+      - "8000"
+    restart: unless-stopped

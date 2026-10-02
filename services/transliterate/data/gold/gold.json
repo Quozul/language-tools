@@ -1,0 +1,174 @@
+[
+  {
+    "id": "everyday-001",
+    "category": "everyday",
+    "text": "東京は大きい。",
+    "reviewed": false,
+    "tokens": [
+      {"surface": "東京", "reading": "とうきょう", "romaji": "tōkyō",
+       "ruby": [["東", "とう", "per-kanji"], ["京", "きょう", "per-kanji"]]},
+      {"surface": "は", "reading": "わ", "romaji": "wa", "ruby": []},
+      {"surface": "大きい", "reading": "おおきい", "romaji": "ōkī",
+       "ruby": [["大", "おお", "per-kanji"]]},
+      {"surface": "。", "reading": null, "romaji": ".", "ruby": []}
+    ]
+  },
+  {
+    "id": "everyday-002",
+    "category": "everyday",
+    "text": "手紙を書きました。",
+    "reviewed": false,
+    "tokens": [
+      {"surface": "手紙", "reading": "てがみ", "romaji": "tegami",
+       "ruby": [["手", "て", "per-kanji"], ["紙", "がみ", "per-kanji"]]},
+      {"surface": "を", "reading": "お", "romaji": "o", "ruby": []},
+      {"surface": "書き", "reading": "かき", "romaji": "kaki",
+       "ruby": [["書", "か", "per-kanji"]]},
+      {"surface": "まし", "reading": "まし", "romaji": "mashi", "ruby": []},
+      {"surface": "た", "reading": "た", "romaji": "ta", "ruby": []},
+      {"surface": "。", "reading": null, "romaji": ".", "ruby": []}
+    ]
+  },
+  {
+    "id": "heteronym-001",
+    "category": "heteronym",
+    "text": "人気があります。",
+    "reviewed": false,
+    "tokens": [
+      {"surface": "人気", "reading": "にんき", "romaji": "ninki",
+       "ruby": [["人", "にん", "per-kanji"], ["気", "き", "per-kanji"]]},
+      {"surface": "が", "reading": "が", "romaji": "ga", "ruby": []},
+      {"surface": "あり", "reading": "あり", "romaji": "ari", "ruby": []},
+      {"surface": "ます", "reading": "ます", "romaji": "masu", "ruby": []},
+      {"surface": "。", "reading": null, "romaji": ".", "ruby": []}
+    ]
+  },
+  {
+    "id": "names-001",
+    "category": "proper-name",
+    "text": "日下部さん",
+    "reviewed": false,
+    "tokens": [
+      {"surface": "日下部", "reading": "くさかべ", "romaji": "kusakabe",
+       "ruby": [["日下部", "くさかべ", "group"]]},
+      {"surface": "さん", "reading": "さん", "romaji": "san", "ruby": []}
+    ]
+  },
+  {
+    "id": "jukujikun-001",
+    "category": "jukujikun",
+    "text": "今日は天気だ。",
+    "reviewed": false,
+    "tokens": [
+      {"surface": "今日", "reading": "きょう", "romaji": "kyō",
+       "ruby": [["今日", "きょう", "group"]]},
+      {"surface": "は", "reading": "わ", "romaji": "wa", "ruby": []},
+      {"surface": "天気", "reading": "てんき", "romaji": "tenki",
+       "ruby": [["天", "てん", "per-kanji"], ["気", "き", "per-kanji"]]},
+      {"surface": "だ", "reading": "だ", "romaji": "da", "ruby": []},
+      {"surface": "。", "reading": null, "romaji": ".", "ruby": []}
+    ]
+  },
+  {
+    "id": "counter-001",
+    "category": "counter",
+    "text": "一人ください。",
+    "reviewed": false,
+    "tokens": [
+      {"surface": "一人", "reading": "ひとり", "romaji": "hitori",
+       "ruby": [["一人", "ひとり", "group"]]},
+      {"surface": "ください", "reading": "ください", "romaji": "kudasai", "ruby": []},
+      {"surface": "。", "reading": null, "romaji": ".", "ruby": []}
+    ]
+  },
+  {
+    "id": "counter-002",
+    "category": "counter",
+    "text": "二十日が発売されます。",
+    "reviewed": false,
+    "tokens": [
+      {"surface": "二十", "reading": "はつ", "romaji": "hatsu",
+       "ruby": [["二十", "はつ", "group"]]},
+      {"surface": "日", "reading": "か", "romaji": "ka", "ruby": [["日", "か", "per-kanji"]]},
+      {"surface": "が", "reading": "が", "romaji": "ga", "ruby": []},
+      {"surface": "発売", "reading": "はつばい", "romaji": "hatsubai",
+       "ruby": [["発", "はつ", "per-kanji"], ["売", "ばい", "per-kanji"]]},
+      {"surface": "さ", "reading": "さ", "romaji": "sa", "ruby": []},
+      {"surface": "れ", "reading": "れ", "romaji": "re", "ruby": []},
+      {"surface": "ます", "reading": "ます", "romaji": "masu", "ruby": []},
+      {"surface": "。", "reading": null, "romaji": ".", "ruby": []}
+    ]
+  },
+  {
+    "id": "rendaku-001",
+    "category": "rendaku",
+    "text": "本屋に行きます。",
+    "reviewed": false,
+    "tokens": [
+      {"surface": "本屋", "reading": "ほんや", "romaji": "hon'ya",
+       "ruby": [["本", "ほん", "per-kanji"], ["屋", "や", "per-kanji"]]},
+      {"surface": "に", "reading": "に", "romaji": "ni", "ruby": []},
+      {"surface": "行き", "reading": "いき", "romaji": "iki",
+       "ruby": [["行", "い", "per-kanji"]]},
+      {"surface": "ます", "reading": "ます", "romaji": "masu", "ruby": []},
+      {"surface": "。", "reading": null, "romaji": ".", "ruby": []}
+    ]
+  },
+  {
+    "id": "longvowel-001",
+    "category": "long-vowel",
+    "text": "大阪はいい所です。",
+    "reviewed": false,
+    "tokens": [
+      {"surface": "大阪", "reading": "おおさか", "romaji": "ōsaka",
+       "ruby": [["大", "おお", "per-kanji"], ["阪", "さか", "per-kanji"]]},
+      {"surface": "は", "reading": "わ", "romaji": "wa", "ruby": []},
+      {"surface": "いい", "reading": "いい", "romaji": "ī", "ruby": []},
+      {"surface": "所", "reading": "ところ", "romaji": "tokoro",
+       "ruby": [["所", "ところ", "per-kanji"]]},
+      {"surface": "です", "reading": "です", "romaji": "desu", "ruby": []},
+      {"surface": "。", "reading": null, "romaji": ".", "ruby": []}
+    ]
+  },
+  {
+    "id": "smallkana-001",
+    "category": "small-kana-sokuon",
+    "text": "ちょっと待って。",
+    "reviewed": false,
+    "tokens": [
+      {"surface": "ちょっと", "reading": "ちょっと", "romaji": "chotto", "ruby": []},
+      {"surface": "待っ", "reading": "まっ", "romaji": "ma",
+       "ruby": [["待", "ま", "per-kanji"]]},
+      {"surface": "て", "reading": "て", "romaji": "te", "ruby": []},
+      {"surface": "。", "reading": null, "romaji": ".", "ruby": []}
+    ]
+  },
+  {
+    "id": "katakana-001",
+    "category": "katakana",
+    "text": "ビールを飲みます。",
+    "reviewed": false,
+    "tokens": [
+      {"surface": "ビール", "reading": "びーる", "romaji": "bīru", "ruby": []},
+      {"surface": "を", "reading": "お", "romaji": "o", "ruby": []},
+      {"surface": "飲み", "reading": "のみ", "romaji": "nomi",
+       "ruby": [["飲", "の", "per-kanji"]]},
+      {"surface": "ます", "reading": "ます", "romaji": "masu", "ruby": []},
+      {"surface": "。", "reading": null, "romaji": ".", "ruby": []}
+    ]
+  },
+  {
+    "id": "halfwidth-001",
+    "category": "halfwidth-katakana",
+    "text": "ｶﾀｶﾅを飲みます。",
+    "reviewed": false,
+    "tokens": [
+      {"surface": "カタカナ", "reading": "かたかな", "romaji": "katakana", "ruby": []},
+      {"surface": "を", "reading": "お", "romaji": "o", "ruby": []},
+      {"surface": "飲み", "reading": "のみ", "romaji": "nomi",
+       "ruby": [["飲", "の", "per-kanji"]]},
+      {"surface": "ます", "reading": "ます", "romaji": "masu", "ruby": []},
+      {"surface": "。", "reading": null, "romaji": ".", "ruby": []}
+    ]
+  }
+]

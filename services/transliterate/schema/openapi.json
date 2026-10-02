@@ -1,0 +1,454 @@
+{
+  "components": {
+    "schemas": {
+      "AlternativeModel": {
+        "properties": {
+          "reading": {
+            "title": "Reading",
+            "type": "string"
+          },
+          "source": {
+            "title": "Source",
+            "type": "string"
+          }
+        },
+        "required": [
+          "reading",
+          "source"
+        ],
+        "title": "AlternativeModel",
+        "type": "object"
+      },
+      "AnnotateRequest": {
+        "properties": {
+          "detail": {
+            "default": "full",
+            "enum": [
+              "full",
+              "compact"
+            ],
+            "title": "Detail",
+            "type": "string"
+          },
+          "include_alternatives": {
+            "default": false,
+            "title": "Include Alternatives",
+            "type": "boolean"
+          },
+          "include_ruby": {
+            "default": true,
+            "title": "Include Ruby",
+            "type": "boolean"
+          },
+          "language": {
+            "title": "Language",
+            "type": "string"
+          },
+          "long_vowel_style": {
+            "default": "macron",
+            "enum": [
+              "macron",
+              "doubled",
+              "ou",
+              "plain"
+            ],
+            "title": "Long Vowel Style",
+            "type": "string"
+          },
+          "romanization_system": {
+            "default": "hepburn-modified",
+            "enum": [
+              "hepburn-modified",
+              "kunrei-shiki",
+              "nihon-shiki"
+            ],
+            "title": "Romanization System",
+            "type": "string"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          },
+          "word_spacing": {
+            "default": true,
+            "title": "Word Spacing",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "text",
+          "language"
+        ],
+        "title": "AnnotateRequest",
+        "type": "object"
+      },
+      "AnnotateResponse": {
+        "properties": {
+          "engine": {
+            "title": "Engine",
+            "type": "string"
+          },
+          "engine_version": {
+            "title": "Engine Version",
+            "type": "string"
+          },
+          "language": {
+            "title": "Language",
+            "type": "string"
+          },
+          "options_applied": {
+            "additionalProperties": true,
+            "title": "Options Applied",
+            "type": "object"
+          },
+          "romanization_system": {
+            "title": "Romanization System",
+            "type": "string"
+          },
+          "tokens": {
+            "items": {
+              "$ref": "#/components/schemas/TokenModel"
+            },
+            "title": "Tokens",
+            "type": "array"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Warnings",
+            "type": "array"
+          }
+        },
+        "required": [
+          "language",
+          "engine",
+          "engine_version",
+          "romanization_system",
+          "options_applied",
+          "tokens",
+          "warnings"
+        ],
+        "title": "AnnotateResponse",
+        "type": "object"
+      },
+      "CapabilitiesResponse": {
+        "properties": {
+          "engines": {
+            "additionalProperties": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Engines",
+            "type": "object"
+          },
+          "languages": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Languages",
+            "type": "array"
+          }
+        },
+        "required": [
+          "languages"
+        ],
+        "title": "CapabilitiesResponse",
+        "type": "object"
+      },
+      "CompactAnnotateResponse": {
+        "properties": {
+          "language": {
+            "title": "Language",
+            "type": "string"
+          },
+          "tokens": {
+            "items": {
+              "$ref": "#/components/schemas/CompactTokenModel"
+            },
+            "title": "Tokens",
+            "type": "array"
+          }
+        },
+        "required": [
+          "language",
+          "tokens"
+        ],
+        "title": "CompactAnnotateResponse",
+        "type": "object"
+      },
+      "CompactTokenModel": {
+        "properties": {
+          "join_with_previous": {
+            "title": "Join With Previous",
+            "type": "boolean"
+          },
+          "romaji": {
+            "title": "Romaji",
+            "type": "string"
+          },
+          "ruby": {
+            "items": {
+              "$ref": "#/components/schemas/RubySegmentModel"
+            },
+            "title": "Ruby",
+            "type": "array"
+          },
+          "surface": {
+            "title": "Surface",
+            "type": "string"
+          }
+        },
+        "required": [
+          "surface",
+          "romaji",
+          "ruby",
+          "join_with_previous"
+        ],
+        "title": "CompactTokenModel",
+        "type": "object"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "title": "Detail",
+            "type": "array"
+          }
+        },
+        "title": "HTTPValidationError",
+        "type": "object"
+      },
+      "RubySegmentModel": {
+        "properties": {
+          "base": {
+            "title": "Base",
+            "type": "string"
+          },
+          "scope": {
+            "title": "Scope",
+            "type": "string"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "base",
+          "text",
+          "scope"
+        ],
+        "title": "RubySegmentModel",
+        "type": "object"
+      },
+      "TokenModel": {
+        "properties": {
+          "alternatives": {
+            "items": {
+              "$ref": "#/components/schemas/AlternativeModel"
+            },
+            "title": "Alternatives",
+            "type": "array"
+          },
+          "confidence": {
+            "title": "Confidence",
+            "type": "string"
+          },
+          "flags": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Flags",
+            "type": "array"
+          },
+          "join_with_previous": {
+            "title": "Join With Previous",
+            "type": "boolean"
+          },
+          "pos": {
+            "title": "Pos",
+            "type": "string"
+          },
+          "reading": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reading"
+          },
+          "romaji": {
+            "title": "Romaji",
+            "type": "string"
+          },
+          "ruby": {
+            "items": {
+              "$ref": "#/components/schemas/RubySegmentModel"
+            },
+            "title": "Ruby",
+            "type": "array"
+          },
+          "source": {
+            "title": "Source",
+            "type": "string"
+          },
+          "surface": {
+            "title": "Surface",
+            "type": "string"
+          }
+        },
+        "required": [
+          "surface",
+          "pos",
+          "reading",
+          "romaji",
+          "ruby",
+          "source",
+          "confidence",
+          "alternatives",
+          "flags",
+          "join_with_previous"
+        ],
+        "title": "TokenModel",
+        "type": "object"
+      },
+      "ValidationError": {
+        "properties": {
+          "ctx": {
+            "title": "Context",
+            "type": "object"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "title": "Location",
+            "type": "array"
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError",
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "title": "qzl-transliterate",
+    "version": "0.1.0"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/v1/annotate": {
+      "post": {
+        "operationId": "annotate_v1_annotate_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnnotateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/AnnotateResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/CompactAnnotateResponse"
+                    }
+                  ],
+                  "title": "Response Annotate V1 Annotate Post"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Annotate"
+      }
+    },
+    "/v1/capabilities": {
+      "get": {
+        "operationId": "capabilities_v1_capabilities_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CapabilitiesResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Capabilities"
+      }
+    },
+    "/v1/health": {
+      "get": {
+        "operationId": "health_v1_health_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Health V1 Health Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Health"
+      }
+    }
+  }
+}
