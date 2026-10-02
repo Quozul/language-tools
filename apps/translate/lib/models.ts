@@ -236,7 +236,10 @@ export function familySupports(
 /**
  * Picks the family that will serve a request. Fallback priority is the
  * user-selected family first, then the remaining families in declaration
- * order (MiLMMT, then Hy-MT2, then TranslateGemma).
+ * order (MiLMMT, then Hy-MT2, then TranslateGemma). A selected automatic
+ * family is always honoured when it supports the target: it strips the
+ * source code and detects on its own, so a known source never routes away
+ * from the user's preferred model.
  */
 export function resolveFamily(
   selected: ModelFamilyId,
@@ -244,6 +247,12 @@ export function resolveFamily(
   target: string,
 ): ModelFamily | null {
   const current = familyById(selected);
+  if (
+    current?.sourcePolicy === "automatic" &&
+    familySupports(current, null, target)
+  ) {
+    return current;
+  }
   const ordered: ModelFamily[] = current
     ? [current, ...MODEL_FAMILIES.filter((family) => family.id !== current.id)]
     : [...MODEL_FAMILIES];

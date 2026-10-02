@@ -42,12 +42,12 @@ describe("resolveRequest", () => {
     expect(resolved.source?.name).toBe("English");
   });
 
-  it("falls back from an auto-detect family to a required-source family when a source is chosen", () => {
+  it("honours a selected auto-detect family and strips a chosen source", () => {
     const resolved = resolveRequest(
       request({ family: "hy-mt2", source: "en", target: "fr" }),
     );
-    expect(resolved.family.id).toBe("milmmt");
-    expect(resolved.source?.name).toBe("English");
+    expect(resolved.family.id).toBe("hy-mt2");
+    expect(resolved.source).toBeNull();
   });
 
   it("keeps an auto-detect family when the source is detection", () => {
@@ -56,11 +56,20 @@ describe("resolveRequest", () => {
     expect(resolved.source).toBeNull();
   });
 
+  it("honours a selected auto-detect family even when a source is detected", () => {
+    const resolved = resolveRequest(
+      request({ family: "hy-mt2", source: "detect" }),
+      "es",
+    );
+    expect(resolved.family.id).toBe("hy-mt2");
+    expect(resolved.source).toBeNull();
+  });
+
   it("falls back to the required-source family that knows an explicit source", () => {
     // Ukrainian is not in MiLMMT, so TranslateGemma is the only family that
     // can name an explicit Ukrainian source.
     const resolved = resolveRequest(
-      request({ family: "hy-mt2", source: "uk", target: "fr" }),
+      request({ family: "milmmt", source: "uk", target: "fr" }),
     );
     expect(resolved.family.id).toBe("translategemma");
     expect(resolved.model).toBe("local/translategemma-12b-it");

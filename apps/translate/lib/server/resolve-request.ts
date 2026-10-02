@@ -95,7 +95,9 @@ export function resolveRequest(
 
   return {
     text,
-    source,
+    // Automatic families detect the language themselves, so the known source
+    // is stripped and the user-selected family is honoured anyway.
+    source: family.sourcePolicy === "automatic" ? null : source,
     target,
     family,
     preset: body.preset,

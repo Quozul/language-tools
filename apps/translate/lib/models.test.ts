@@ -66,3 +66,14 @@ describe("TranslateGemma family", () => {
     expect(resolveFamily("translategemma", null, "uk")?.id).toBe("hy-mt2");
   });
 });
+
+describe("resolveFamily with a selected automatic family", () => {
+  it("honours the selection and strips the source when the target is supported", () => {
+    expect(resolveFamily("hy-mt2", "en", "fr")?.id).toBe("hy-mt2");
+    expect(resolveFamily("hy-mt2", "es", "fr")?.id).toBe("hy-mt2");
+  });
+
+  it("still falls back when the target is unsupported", () => {
+    expect(resolveFamily("hy-mt2", "en", "bg")?.id).toBe("milmmt");
+  });
+});
