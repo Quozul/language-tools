@@ -24,7 +24,6 @@ services:
     expose:
       - "8000"
     environment:
-      QZL_WORKERS: "2"
       QZL_MAX_TEXT_LENGTH: "5000"
     # Full UniDic plus the JmdictFurigana lookups need headroom.
     mem_limit: 2g

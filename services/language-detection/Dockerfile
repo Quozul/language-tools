@@ -1,12 +1,14 @@
 # fasttext-predict ships prebuilt wheels (unlike fasttext), so no compiler toolchain is needed.
 FROM python:3.13-slim AS builder
 
+# Pre-download the model into the HF cache in its own layer, before the
+# dependency install, so requirements.txt churn does not re-download it.
+RUN pip install --no-cache-dir huggingface_hub \
+    && python -c \
+    "from huggingface_hub import hf_hub_download; hf_hub_download('HPLT/OpenLID-v3', 'openlid-v3.bin')"
+
 COPY requirements.txt .
 RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
-
-# Pre-download the model into the HF cache; cached unless the model version changes
-RUN PYTHONPATH=/install/lib/python3.13/site-packages python -c \
-    "from huggingface_hub import hf_hub_download; hf_hub_download('HPLT/OpenLID-v3', 'openlid-v3.bin')"
 
 FROM python:3.13-slim
 
