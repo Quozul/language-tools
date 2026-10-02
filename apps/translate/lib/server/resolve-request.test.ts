@@ -24,6 +24,18 @@ describe("resolveRequest", () => {
     expect(resolved.source).toBeNull();
   });
 
+  it("keeps the requested family when a detected source is supported", () => {
+    const resolved = resolveRequest(request({ source: "detect" }), "es");
+    expect(resolved.family.id).toBe("milmmt");
+    expect(resolved.source?.name).toBe("Spanish");
+  });
+
+  it("falls back to an auto-detect family for an unsupported detected code", () => {
+    const resolved = resolveRequest(request({ source: "detect" }), "xx");
+    expect(resolved.family.id).toBe("hy-mt2");
+    expect(resolved.source).toBeNull();
+  });
+
   it("keeps the requested family when it supports the pair", () => {
     const resolved = resolveRequest(request({ source: "en", target: "fr" }));
     expect(resolved.family.id).toBe("milmmt");

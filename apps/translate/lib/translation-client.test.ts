@@ -46,7 +46,17 @@ describe("requestTranslation", () => {
       preset: null,
       cached: false,
       durationMs: null,
+      detected: null,
     });
+  });
+
+  it("reports the language the server detected", async () => {
+    const result = await requestTranslation(
+      body,
+      new AbortController().signal,
+      fakeFetch(jsonResponse(200, { translation: "bonjour", detected: "es" })),
+    );
+    expect(result.detected).toBe("es");
   });
 
   it("returns model provenance, cache state, and duration", async () => {

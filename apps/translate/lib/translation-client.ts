@@ -19,6 +19,8 @@ export interface TranslationMeta {
   preset: ModelPreset | null;
   cached: boolean;
   durationMs: number | null;
+  /** Language code the server detected for a "detect" source; null if unreported. */
+  detected: string | null;
   /** Furigana/romaji tokens when the target language supports them. */
   transliteration: Transliteration | null;
 }
@@ -43,6 +45,10 @@ export function toTranslationMeta(
         : null,
     cached: data.cached === true,
     durationMs: toFiniteDuration(data.durationMs),
+    detected:
+      typeof data.detected === "string" && data.detected !== ""
+        ? data.detected
+        : null,
     transliteration: data.transliteration ?? null,
   };
 }

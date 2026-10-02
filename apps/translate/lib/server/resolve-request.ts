@@ -24,7 +24,16 @@ export interface SanitizedRequest {
   model: string;
 }
 
-export function resolveRequest(body: TranslationRequestBody): SanitizedRequest {
+/**
+ * Resolves a request body into a sanitized, ready-to-serve request. When the
+ * request asks for detection, `detectedSource` carries the code the
+ * language-detection service reported for the text; unsupported codes behave
+ * exactly like a failed detection.
+ */
+export function resolveRequest(
+  body: TranslationRequestBody,
+  detectedSource?: string | null,
+): SanitizedRequest {
   const text = normalizeTranslationText(body.text);
   const issue = validateTranslationInput(text);
   if (issue?.code === "too_long") {
@@ -59,6 +68,11 @@ export function resolveRequest(body: TranslationRequestBody): SanitizedRequest {
       );
     }
     source = resolved;
+  } else if (rawSource === DETECT_SOURCE) {
+    // A server-side detection lets required-source families serve the request
+    // with their preferred model instead of falling back to an auto-detecting
+    // family.
+    source = detectedSource ? (languageByCode(detectedSource) ?? null) : null;
   }
 
   const requested = familyById(body.family.trim());

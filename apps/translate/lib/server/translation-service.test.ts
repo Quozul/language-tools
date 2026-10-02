@@ -48,6 +48,19 @@ describe("translateRequest", () => {
     });
   });
 
+  it("serves a detected source through the requested family when supported", async () => {
+    const completion = vi.fn<ModelCompletion>().mockResolvedValue("bonjour");
+    const outcome = await translateRequest(request({ source: "detect" }), {
+      completion,
+      cache: createTranslationCache(),
+      detectedSource: "es",
+    });
+    expect(outcome.family.id).toBe("milmmt");
+    expect(completion.mock.calls[0]?.[0]).toMatchObject({
+      model: "local/milmmt-46-4b",
+    });
+  });
+
   it("serves a repeat request from the cache", async () => {
     const completion = vi.fn<ModelCompletion>().mockResolvedValue("bonjour");
     const cache = createTranslationCache();

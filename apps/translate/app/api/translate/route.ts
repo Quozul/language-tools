@@ -1,4 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
+import { languageByCode } from "@/lib/languages";
+import { DETECT_SOURCE } from "@/lib/models";
+import { detectionClient } from "@/lib/server/detection-client";
 import { ApiError } from "@/lib/server/errors";
 import { createCompletionFromEnvironment } from "@/lib/server/openai-adapter";
 import { translateRequest } from "@/lib/server/translation-service";
@@ -28,8 +31,23 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
   try {
     const completion = createCompletionFromEnvironment();
+    // An explicit source never needs detection. A failed detection leaves the
+    // request on the auto-detect fallback, exactly like before detection was
+    // wired up: the enhancement must not fail the translation itself.
+    let detectedLanguage: ReturnType<typeof languageByCode>;
+    if (
+      parsed.data.source.trim() === DETECT_SOURCE &&
+      parsed.data.text.trim() !== ""
+    ) {
+      const detected = await detectionClient().detect(
+        parsed.data.text,
+        request.signal,
+      );
+      detectedLanguage = detected ? languageByCode(detected) : undefined;
+    }
     const outcome = await translateRequest(parsed.data, {
       completion,
+      detectedSource: detectedLanguage?.code ?? null,
       signal: request.signal,
     });
     const body: TranslationResponseBody = {
@@ -39,6 +57,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       cached: outcome.fromCache,
       durationMs: outcome.durationMs,
     };
+    if (detectedLanguage) body.detected = detectedLanguage.code;
     // Transliteration is an enhancement: the service may be down or lack the
     // language, and that must never fail the translation itself.
     try {

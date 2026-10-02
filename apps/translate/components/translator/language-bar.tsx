@@ -6,14 +6,20 @@ import { DETECT_SOURCE } from "@/lib/models";
 import {
   useTranslatorActions,
   useTranslatorPreferences,
+  useTranslatorSession,
 } from "./translator-context";
 import { TranslatorSettings } from "./translator-settings";
-
-const DETECT_OPTION = { value: DETECT_SOURCE, label: "Detect language" };
+import { detectLanguageLabel } from "./translator-state";
 
 export function LanguageBar() {
   const { source, target, frequent } = useTranslatorPreferences();
+  const { detectedLanguage } = useTranslatorSession();
   const { changeSource, chooseLanguage } = useTranslatorActions();
+
+  const detectOption = {
+    value: DETECT_SOURCE,
+    label: detectLanguageLabel(detectedLanguage),
+  };
 
   return (
     <div className="flex items-center gap-2 border-b px-3 py-2">
@@ -23,7 +29,7 @@ export function LanguageBar() {
           frequent={frequent}
           onSelect={changeSource}
           ariaLabel="Source language"
-          detect={DETECT_OPTION}
+          detect={detectOption}
         />
       </div>
       <SwapLanguages />

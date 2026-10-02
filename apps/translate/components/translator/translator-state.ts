@@ -54,6 +54,8 @@ export interface TranslatorState {
   composing: boolean;
   hydrated: boolean;
   frequent: string[];
+  /** Language code the server last detected for a "detect" source. */
+  detectedLanguage: string | null;
 }
 
 export type TranslatorEvent =
@@ -84,6 +86,7 @@ export type TranslatorEvent =
       inputs: TranslatorInputs;
       attribution?: TranslationAttribution | null;
       transliteration?: Transliteration | null;
+      detected?: string | null;
     }
   | { type: "requestFailed"; requestId: number; error: string };
 
@@ -105,6 +108,19 @@ export function canSwapLanguages(inputs: TranslatorInputs): boolean {
   );
 }
 
+const DETECT_LABEL = "Detect language";
+
+/**
+ * Label for the source picker's detection option, annotated with the language
+ * the server reported for the last translation, e.g. "Detect language
+ * (Spanish)". Falls back to the bare label when nothing was detected.
+ */
+export function detectLanguageLabel(detectedLanguage: string | null): string {
+  if (detectedLanguage === null) return DETECT_LABEL;
+  const name = languageByCode(detectedLanguage)?.name ?? detectedLanguage;
+  return `${DETECT_LABEL} (${name})`;
+}
+
 export function createInitialState(): TranslatorState {
   return {
     inputs: {
@@ -119,6 +135,7 @@ export function createInitialState(): TranslatorState {
     composing: false,
     hydrated: false,
     frequent: [],
+    detectedLanguage: null,
   };
 }
 
@@ -274,6 +291,7 @@ export function translatorReducer(
       return {
         ...state,
         request: { status: "ready" },
+        detectedLanguage: event.detected ?? null,
         lastSuccess: {
           translation: event.translation,
           inputs: event.inputs,

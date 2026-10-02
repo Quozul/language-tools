@@ -54,6 +54,7 @@ function metaFor(
     preset: null,
     cached: false,
     durationMs: null,
+    detected: null,
     transliteration: null,
     ...overrides,
   };
@@ -185,6 +186,7 @@ describe("translation engine request ownership", () => {
       preset: "balanced",
       cached: true,
       durationMs: 42,
+      detected: "es",
     };
     sent[0].completion.resolve("bonjour");
     await flush();
@@ -195,6 +197,7 @@ describe("translation engine request ownership", () => {
         preset: "balanced",
         cached: true,
         durationMs: 42,
+        detected: "es",
         transliteration: null,
       },
     ]);

@@ -3,6 +3,7 @@ import { DETECT_SOURCE } from "@/lib/models";
 import {
   canSwapLanguages,
   createInitialState,
+  detectLanguageLabel,
   getTranslationPresentation,
   type TranslationAttribution,
   type TranslationResult,
@@ -122,6 +123,29 @@ describe("translator reducer — invariants", () => {
 
     state = succeed(state, 2, "bonjour!", {});
     expect(state.lastSuccess?.attribution).toBeNull();
+  });
+
+  it("tracks the detected language and clears it when a result lacks one", () => {
+    let state = type(createInitialState(), "hola");
+    expect(createInitialState().detectedLanguage).toBeNull();
+    state = translatorReducer(state, { type: "requestStarted", requestId: 1 });
+    state = translatorReducer(state, {
+      type: "requestSucceeded",
+      requestId: 1,
+      translation: "hello",
+      inputs: state.inputs,
+      detected: "es",
+    });
+    expect(state.detectedLanguage).toBe("es");
+
+    state = translatorReducer(state, { type: "requestStarted", requestId: 2 });
+    state = translatorReducer(state, {
+      type: "requestSucceeded",
+      requestId: 2,
+      translation: "hello!",
+      inputs: state.inputs,
+    });
+    expect(state.detectedLanguage).toBeNull();
   });
 
   it("ignores results for stale request IDs", () => {
@@ -370,6 +394,20 @@ describe("preferencesRestored", () => {
     expect(state.inputs.target).toBe("ja");
     expect(state.inputs.preset).toBe("turbo");
     expect(state.frequent).toEqual(["de"]);
+  });
+});
+
+describe("detectLanguageLabel", () => {
+  it("stays bare until the server reports a detection", () => {
+    expect(detectLanguageLabel(null)).toBe("Detect language");
+  });
+
+  it("names the detected language", () => {
+    expect(detectLanguageLabel("es")).toBe("Detect language (Spanish)");
+  });
+
+  it("falls back to the raw code for an unknown language", () => {
+    expect(detectLanguageLabel("und")).toBe("Detect language (und)");
   });
 });
 

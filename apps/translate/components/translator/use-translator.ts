@@ -51,6 +51,7 @@ export interface TranslatorSessionSlice {
   request: RequestState;
   lastSuccess: TranslationResult | null;
   presentation: TranslationPresentation;
+  detectedLanguage: string | null;
 }
 
 export interface TranslatorActions {
@@ -126,6 +127,7 @@ export function useTranslatorController(): {
         translation: meta.translation,
         attribution: attributionFor(meta, body.family, body.preset),
         transliteration: meta.transliteration,
+        detected: meta.detected,
         inputs: {
           text: body.text,
           source: body.source,
@@ -297,8 +299,13 @@ export function useTranslatorController(): {
   );
 
   const sessionSlice = useMemo<TranslatorSessionSlice>(
-    () => ({ request, lastSuccess: state.lastSuccess, presentation }),
-    [request, state.lastSuccess, presentation],
+    () => ({
+      request,
+      lastSuccess: state.lastSuccess,
+      presentation,
+      detectedLanguage: state.detectedLanguage,
+    }),
+    [request, state.lastSuccess, presentation, state.detectedLanguage],
   );
 
   const actions = useMemo<TranslatorActions>(

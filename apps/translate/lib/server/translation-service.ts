@@ -20,6 +20,12 @@ export interface TranslateOutcome {
 
 export interface TranslateOptions {
   completion: ModelCompletion;
+  /**
+   * Language code the detection service reported when the request asked for
+   * detection. Lets the user's preferred family serve the pair when it supports
+   * the detected language.
+   */
+  detectedSource?: string | null;
   signal?: AbortSignal;
   now?: () => number;
   cache?: TranslationCache;
@@ -29,7 +35,7 @@ export async function translateRequest(
   body: TranslationRequestBody,
   options: TranslateOptions,
 ): Promise<TranslateOutcome> {
-  const sanitized = resolveRequest(body);
+  const sanitized = resolveRequest(body, options.detectedSource);
   const now = options.now ?? Date.now;
   const startedAt = now();
   const finish = (

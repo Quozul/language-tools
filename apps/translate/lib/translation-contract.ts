@@ -46,6 +46,11 @@ export const translationResponseBodySchema = z.object({
   /** True when the translation came from the in-memory cache. */
   cached: z.boolean().optional(),
   /**
+   * Language code the server detected when the request asked for detection.
+   * Only present when detection succeeded and the language is supported.
+   */
+  detected: z.string().optional(),
+  /**
    * Server-side wall time for the translation, in milliseconds. Deliberately
    * lax: bogus metadata must never invalidate an otherwise good translation.
    */
