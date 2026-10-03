@@ -2,6 +2,7 @@
 
 import { useCallback, useMemo, useRef } from "react";
 import { FREQUENT_LANGUAGE_LIMIT } from "@/lib/languages";
+import type { ModelFamilyId, ModelPreset } from "@/lib/models";
 import {
   browserStorage,
   getFrequentLanguages,
@@ -9,7 +10,6 @@ import {
   type Preferences,
   saveTranslationPreferences,
 } from "@/lib/preferences";
-import type { TranslatorInputs } from "./translator-state";
 
 export function usePreferenceStore() {
   const usageRef = useRef<Record<string, number>>({});
@@ -21,14 +21,19 @@ export function usePreferenceStore() {
   }, []);
 
   const persist = useCallback(
-    (
-      inputs: Pick<TranslatorInputs, "target" | "source" | "family" | "preset">,
-    ): void => {
+    (fields: {
+      target: string;
+      source: string;
+      family: ModelFamilyId;
+      preset: ModelPreset;
+      debugInfo: boolean;
+    }): void => {
       saveTranslationPreferences(browserStorage(), {
-        target: inputs.target,
-        source: inputs.source,
-        family: inputs.family,
-        preset: inputs.preset,
+        target: fields.target,
+        source: fields.source,
+        family: fields.family,
+        preset: fields.preset,
+        debugInfo: fields.debugInfo,
         usage: usageRef.current,
       });
     },

@@ -38,6 +38,7 @@ export interface TranslatorPreferencesSlice {
   source: string;
   family: ModelFamilyId;
   preset: ModelPreset;
+  debugInfo: boolean;
   frequent: string[];
 }
 
@@ -59,6 +60,7 @@ export interface TranslatorActions {
   changeSource: (value: string) => void;
   changeFamily: (value: ModelFamilyId) => void;
   changePreset: (value: ModelPreset) => void;
+  changeDebugInfo: (value: boolean) => void;
   changeText: (value: string) => void;
   pasteText: (value: string) => void;
   swapLanguages: () => void;
@@ -178,14 +180,16 @@ export function useTranslatorController(): {
       source: restored.source,
       family: restored.family,
       preset: restored.preset,
+      debugInfo: restored.debugInfo,
       frequent: preferences.frequent(),
     });
   }, [preferences]);
 
   const { target, source, family, preset } = state.inputs;
+  const { debugInfo } = state;
   const storedFields = useMemo(
-    () => ({ target, source, family, preset }),
-    [target, source, family, preset],
+    () => ({ target, source, family, preset, debugInfo }),
+    [target, source, family, preset, debugInfo],
   );
   const hydrated = state.hydrated;
   useEffect(() => {
@@ -243,6 +247,12 @@ export function useTranslatorController(): {
     [applyInput],
   );
 
+  const changeDebugInfo = useCallback(
+    (value: boolean) =>
+      dispatch({ type: "debugInfoChanged", debugInfo: value }),
+    [],
+  );
+
   const changeText = useCallback(
     (value: string) => applyInput({ type: "textChanged", text: value }),
     [applyInput],
@@ -283,8 +293,8 @@ export function useTranslatorController(): {
 
   const { frequent } = state;
   const preferencesSlice = useMemo<TranslatorPreferencesSlice>(
-    () => ({ target, source, family, preset, frequent }),
-    [target, source, family, preset, frequent],
+    () => ({ target, source, family, preset, debugInfo, frequent }),
+    [target, source, family, preset, debugInfo, frequent],
   );
 
   const canSwap = canSwapLanguages(inputs, state.detectedLanguage);
@@ -294,8 +304,8 @@ export function useTranslatorController(): {
   );
 
   const presentation = useMemo(
-    () => getTranslationPresentation(request, state.lastSuccess),
-    [request, state.lastSuccess],
+    () => getTranslationPresentation(request, state.lastSuccess, debugInfo),
+    [request, state.lastSuccess, debugInfo],
   );
 
   const sessionSlice = useMemo<TranslatorSessionSlice>(
@@ -314,6 +324,7 @@ export function useTranslatorController(): {
       changeSource,
       changeFamily,
       changePreset,
+      changeDebugInfo,
       changeText,
       pasteText,
       swapLanguages,
@@ -327,6 +338,7 @@ export function useTranslatorController(): {
       changeSource,
       changeFamily,
       changePreset,
+      changeDebugInfo,
       changeText,
       pasteText,
       swapLanguages,

@@ -400,6 +400,7 @@ describe("preferencesRestored", () => {
       source: "detect",
       family: "milmmt",
       preset: "balanced",
+      debugInfo: false,
       frequent: [],
     });
     expect(restored.hydrated).toBe(true);
@@ -417,11 +418,39 @@ describe("preferencesRestored", () => {
       source: "detect",
       family: "hy-mt2",
       preset: "turbo",
+      debugInfo: true,
       frequent: ["de"],
     });
     expect(state.inputs.target).toBe("ja");
     expect(state.inputs.preset).toBe("turbo");
     expect(state.frequent).toEqual(["de"]);
+    expect(state.debugInfo).toBe(true);
+  });
+});
+
+describe("debugInfoChanged", () => {
+  it("starts hidden", () => {
+    expect(createInitialState().debugInfo).toBe(false);
+  });
+
+  it("toggles the attribution line on and off", () => {
+    const state = translatorReducer(createInitialState(), {
+      type: "debugInfoChanged",
+      debugInfo: true,
+    });
+    expect(state.debugInfo).toBe(true);
+    const off = translatorReducer(state, {
+      type: "debugInfoChanged",
+      debugInfo: false,
+    });
+    expect(off.debugInfo).toBe(false);
+  });
+
+  it("is a no-op when the value is unchanged", () => {
+    const state = createInitialState();
+    expect(
+      translatorReducer(state, { type: "debugInfoChanged", debugInfo: false }),
+    ).toBe(state);
   });
 });
 
@@ -451,7 +480,7 @@ describe("presentation selector", () => {
   ): TranslationResult => ({ ...success, attribution });
 
   it("stays quiet when idle", () => {
-    const p = getTranslationPresentation({ status: "idle" }, null);
+    const p = getTranslationPresentation({ status: "idle" }, null, false);
     expect(p.busy).toBe(false);
     expect(p.statusMessage).toBe("");
     expect(p.errorMessage).toBe("");
@@ -459,17 +488,18 @@ describe("presentation selector", () => {
 
   it("is busy while waiting or loading", () => {
     const loading = { status: "loading", requestId: 1 } as const;
-    expect(getTranslationPresentation(loading, null).busy).toBe(true);
-    expect(getTranslationPresentation(loading, success).busy).toBe(true);
-    expect(getTranslationPresentation({ status: "waiting" }, null).busy).toBe(
-      true,
-    );
+    expect(getTranslationPresentation(loading, null, false).busy).toBe(true);
+    expect(getTranslationPresentation(loading, success, false).busy).toBe(true);
+    expect(
+      getTranslationPresentation({ status: "waiting" }, null, false).busy,
+    ).toBe(true);
   });
 
   it("leaves the status line empty while a new request runs", () => {
     const p = getTranslationPresentation(
       { status: "loading", requestId: 2 },
       success,
+      false,
     );
     expect(p.statusMessage).toBe("");
     expect(p.isStale).toBe(true);
@@ -479,6 +509,7 @@ describe("presentation selector", () => {
     const p = getTranslationPresentation(
       { status: "failed", error: "boom", retryable: true },
       success,
+      false,
     );
     expect(p.statusMessage).toBe("Previous translation");
     expect(p.errorMessage).toBe("boom");
@@ -493,13 +524,14 @@ describe("presentation selector", () => {
         retryable: false,
       },
       success,
+      false,
     );
     expect(p.errorMessage).toBe("Please shorten your text.");
     expect(p.canRetry).toBe(false);
   });
 
   it("announces completion without reading the whole text aloud", () => {
-    const p = getTranslationPresentation({ status: "ready" }, success);
+    const p = getTranslationPresentation({ status: "ready" }, success, false);
     expect(p.statusMessage).toBe("Translation ready");
     expect(p.isStale).toBe(false);
   });
@@ -512,6 +544,7 @@ describe("presentation selector", () => {
         durationMs: 812,
         cached: false,
       }),
+      true,
     );
     expect(p.statusMessage).toBe("Translated by MiLMMT (Balanced) in 812ms");
   });
@@ -520,10 +553,20 @@ describe("presentation selector", () => {
     const p = getTranslationPresentation(
       { status: "ready" },
       attributed({ model: "Hy-MT2 (Turbo)", durationMs: 3, cached: true }),
+      true,
     );
     expect(p.statusMessage).toBe(
       "Translated by Hy-MT2 (Turbo) in 3ms (cached)",
     );
+  });
+
+  it("hides the attribution line when debug info is off", () => {
+    const p = getTranslationPresentation(
+      { status: "ready" },
+      attributed({ model: "Hy-MT2 (Balanced)", durationMs: 1, cached: true }),
+      false,
+    );
+    expect(p.statusMessage).toBe("Translation ready");
   });
 
   it("leaves the status line empty while a new request runs over attributed output", () => {
@@ -534,6 +577,7 @@ describe("presentation selector", () => {
         durationMs: 812,
         cached: false,
       }),
+      true,
     );
     expect(p.statusMessage).toBe("");
   });

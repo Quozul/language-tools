@@ -16,8 +16,9 @@ import {
 } from "./translator-context";
 
 export function TranslatorSettings() {
-  const { family, preset } = useTranslatorPreferences();
-  const { changeFamily, changePreset } = useTranslatorActions();
+  const { family, preset, debugInfo } = useTranslatorPreferences();
+  const { changeFamily, changePreset, changeDebugInfo } =
+    useTranslatorActions();
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -60,8 +61,10 @@ export function TranslatorSettings() {
         onOpenChange={setOpen}
         family={family}
         preset={preset}
+        debugInfo={debugInfo}
         onFamilyChange={changeFamily}
         onPresetChange={changePreset}
+        onDebugInfoChange={changeDebugInfo}
       />
     </>
   );

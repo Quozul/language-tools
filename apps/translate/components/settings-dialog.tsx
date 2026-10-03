@@ -14,6 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Toggle } from "@/components/ui/toggle";
 import {
   familyById,
   isModelPreset,
@@ -29,8 +30,10 @@ interface SettingsDialogProps {
   onOpenChange: (open: boolean) => void;
   family: ModelFamilyId;
   preset: ModelPreset;
+  debugInfo: boolean;
   onFamilyChange: (family: ModelFamilyId) => void;
   onPresetChange: (preset: ModelPreset) => void;
+  onDebugInfoChange: (debugInfo: boolean) => void;
 }
 
 export function SettingsDialog({
@@ -38,8 +41,10 @@ export function SettingsDialog({
   onOpenChange,
   family,
   preset,
+  debugInfo,
   onFamilyChange,
   onPresetChange,
+  onDebugInfoChange,
 }: SettingsDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -47,7 +52,8 @@ export function SettingsDialog({
         <DialogHeader>
           <DialogTitle>Settings</DialogTitle>
           <DialogDescription>
-            Choose the model family and size used for translations.
+            Choose the model family and size used for translations, and whether
+            to show debug info.
           </DialogDescription>
         </DialogHeader>
         <div className="flex flex-col gap-4">
@@ -110,6 +116,27 @@ export function SettingsDialog({
                 ))}
               </SelectContent>
             </Select>
+          </div>
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <p className="text-sm font-medium">
+                <label htmlFor="debug-info">Debug info</label>
+              </p>
+              <p
+                id="debug-info-detail"
+                className="text-sm text-muted-foreground"
+              >
+                Show model, duration, and cache state after each translation.
+              </p>
+            </div>
+            <Toggle
+              id="debug-info"
+              pressed={debugInfo}
+              onPressedChange={(pressed) => onDebugInfoChange(pressed)}
+              aria-describedby="debug-info-detail"
+            >
+              {debugInfo ? "On" : "Off"}
+            </Toggle>
           </div>
         </div>
       </DialogContent>

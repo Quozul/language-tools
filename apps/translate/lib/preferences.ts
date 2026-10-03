@@ -17,6 +17,7 @@ export interface Preferences {
   source: string;
   family: ModelFamilyId;
   preset: ModelPreset;
+  debugInfo: boolean;
   usage: Record<string, number>;
 }
 
@@ -35,6 +36,7 @@ interface StoredPreferences {
   preset?: unknown;
   translation_usage?: unknown;
   model?: unknown;
+  debug_info?: unknown;
 }
 
 const LEGACY_MODELS: Record<
@@ -52,6 +54,7 @@ function fallbackPreferences(): Preferences {
     source: DETECT_SOURCE,
     family: DEFAULT_FAMILY,
     preset: DEFAULT_PRESET,
+    debugInfo: false,
     usage: {},
   };
 }
@@ -125,6 +128,7 @@ export function parseTranslationPreferences(value: unknown): Preferences {
     source,
     family,
     preset,
+    debugInfo: stored.debug_info === true,
     usage: parseUsage(stored.translation_usage),
   };
 }
@@ -152,6 +156,7 @@ export function saveTranslationPreferences(
     source: preferences.source,
     family: preferences.family,
     preset: preferences.preset,
+    debug_info: preferences.debugInfo,
     translation_usage: preferences.usage,
   };
   try {

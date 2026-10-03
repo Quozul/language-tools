@@ -74,6 +74,23 @@ describe("parseTranslationPreferences", () => {
     expect(parsed.source).toBe("en");
   });
 
+  describe("debug info flag", () => {
+    it("defaults to off when absent or malformed", () => {
+      expect(parseTranslationPreferences({}).debugInfo).toBe(false);
+      for (const value of ["yes", 1, null, undefined]) {
+        expect(
+          parseTranslationPreferences({ debug_info: value }).debugInfo,
+        ).toBe(false);
+      }
+    });
+
+    it("honours a stored boolean", () => {
+      expect(parseTranslationPreferences({ debug_info: true }).debugInfo).toBe(
+        true,
+      );
+    });
+  });
+
   describe("usage counters", () => {
     it("drops arrays, non-numbers, negatives, fractions, NaN, and unknown languages", () => {
       const parsed = parseTranslationPreferences({
@@ -116,15 +133,18 @@ describe("loadTranslationPreferences", () => {
     saveTranslationPreferences(writer, {
       target: "de",
       source: "detect",
-      family: "hy-mt2",
-      preset: "turbo",
+      family: "milmmt",
+      preset: "balanced",
+      debugInfo: true,
       usage: { de: 4 },
     });
     const wire = JSON.parse(data.get(PREFERENCES_KEY) ?? "{}");
     expect(wire.translation_usage).toEqual({ de: 4 });
+    expect(wire.debug_info).toBe(true);
     const loaded = loadTranslationPreferences(reader);
     expect(loaded.target).toBe("de");
     expect(loaded.usage.de).toBe(4);
+    expect(loaded.debugInfo).toBe(true);
   });
 
   it("survives storage throwing on read or write", () => {
@@ -143,6 +163,7 @@ describe("loadTranslationPreferences", () => {
         source: "detect",
         family: "milmmt",
         preset: "balanced",
+        debugInfo: false,
         usage: {},
       }),
     ).not.toThrow();

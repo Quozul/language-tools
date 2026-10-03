@@ -54,6 +54,8 @@ export interface TranslatorState {
   composing: boolean;
   hydrated: boolean;
   frequent: string[];
+  /** Shows model/duration/cache attribution in the status line when true. */
+  debugInfo: boolean;
   /** Language code the server last detected for a "detect" source. */
   detectedLanguage: string | null;
 }
@@ -75,9 +77,11 @@ export type TranslatorEvent =
       source: SourceLanguage;
       family: ModelFamilyId;
       preset: ModelPreset;
+      debugInfo: boolean;
       frequent: string[];
     }
   | { type: "usageUpdated"; frequent: string[] }
+  | { type: "debugInfoChanged"; debugInfo: boolean }
   | { type: "requestStarted"; requestId: number }
   | {
       type: "requestSucceeded";
@@ -143,6 +147,7 @@ export function createInitialState(): TranslatorState {
     composing: false,
     hydrated: false,
     frequent: [],
+    debugInfo: false,
     detectedLanguage: null,
   };
 }
@@ -283,11 +288,20 @@ export function translatorReducer(
         family: event.family,
         preset: event.preset,
       });
-      return { ...next, frequent: event.frequent, hydrated: true };
+      return {
+        ...next,
+        frequent: event.frequent,
+        debugInfo: event.debugInfo,
+        hydrated: true,
+      };
     }
 
     case "usageUpdated":
       return { ...state, frequent: event.frequent };
+
+    case "debugInfoChanged":
+      if (state.debugInfo === event.debugInfo) return state;
+      return { ...state, debugInfo: event.debugInfo };
 
     case "requestStarted":
       return {
@@ -340,10 +354,15 @@ export interface TranslationPresentation {
 
 const READY_FALLBACK_MESSAGE = "Translation ready";
 
+/**
+ * The attribution line is debug information: it only appears when the
+ * matching preference is on, otherwise completion stays generic.
+ */
 export function readyMessage(
   attribution: TranslationAttribution | null,
+  debugInfo: boolean,
 ): string {
-  if (attribution === null) return READY_FALLBACK_MESSAGE;
+  if (!debugInfo || attribution === null) return READY_FALLBACK_MESSAGE;
   const cachedSuffix = attribution.cached ? " (cached)" : "";
   return `Translated by ${attribution.model} in ${attribution.durationMs}ms${cachedSuffix}`;
 }
@@ -351,6 +370,7 @@ export function readyMessage(
 export function getTranslationPresentation(
   request: RequestState,
   lastSuccess: TranslationResult | null,
+  debugInfo: boolean,
 ): TranslationPresentation {
   const translated = lastSuccess?.translation ?? "";
   const busy = request.status === "waiting" || request.status === "loading";
@@ -358,7 +378,7 @@ export function getTranslationPresentation(
 
   let statusMessage = "";
   if (request.status === "ready") {
-    statusMessage = readyMessage(lastSuccess?.attribution ?? null);
+    statusMessage = readyMessage(lastSuccess?.attribution ?? null, debugInfo);
   } else if (
     translated !== "" &&
     (request.status === "failed" || request.status === "paused")
