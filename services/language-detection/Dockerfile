@@ -8,7 +8,10 @@ RUN pip install --no-cache-dir huggingface_hub \
     "from huggingface_hub import hf_hub_download; hf_hub_download('HPLT/OpenLID-v3', 'openlid-v3.bin')"
 
 COPY requirements.txt .
-RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
+# --ignore-installed is required: the model-download layer above puts huggingface_hub (and its
+# click dependency) into the builder's site-packages, and pip would otherwise consider them
+# "already satisfied" and omit them from /install, breaking the final image.
+RUN pip install --no-cache-dir --prefix=/install --ignore-installed -r requirements.txt
 
 FROM python:3.13-slim
 
