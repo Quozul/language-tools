@@ -1,9 +1,9 @@
 import { cn } from "cn";
 import { Geist } from "next/font/google";
 import type { ReactNode } from "react";
-import { Toaster } from "@/components/ui/toast";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import "./globals.css";
+import { Toaster } from "@qzl/ui/components/toast";
+import { TooltipProvider } from "@qzl/ui/components/tooltip";
+import "@qzl/ui/globals.css";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 

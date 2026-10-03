@@ -1,14 +1,14 @@
 "use client";
 
 import { CopyIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@qzl/ui/components/button";
 import { languageByCode } from "@/lib/languages";
 import {
   useTranslatorActions,
   useTranslatorSession,
 } from "./translator-context";
-import { TransliteratedText } from "./transliterated-text";
-import { useCopyFeedback } from "./use-clipboard-feedback";
+import { TransliteratedText } from "@qzl/ui/components/transliterated-text";
+import { useCopyFeedback } from "@qzl/ui/hooks/use-clipboard-feedback";
 
 export function TranslationOutput() {
   const { lastSuccess, presentation } = useTranslatorSession();

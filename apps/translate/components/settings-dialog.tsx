@@ -6,15 +6,15 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from "@qzl/ui/components/dialog";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Toggle } from "@/components/ui/toggle";
+} from "@qzl/ui/components/select";
+import { Toggle } from "@qzl/ui/components/toggle";
 import {
   familyById,
   isModelPreset,

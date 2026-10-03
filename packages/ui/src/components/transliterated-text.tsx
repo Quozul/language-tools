@@ -1,6 +1,6 @@
 "use client";
 
-import { joinRomaji, type TransliterationToken } from "@/lib/transliteration";
+import { joinRomaji, type TransliterationToken } from "@qzl/ui/lib/transliteration";
 
 /**
  * Ruby segments only cover annotated runs of the surface text, so the plain
@@ -32,11 +32,26 @@ function tokenNodes(token: TransliterationToken) {
 export function TransliteratedText({
   lines,
   lang,
+  showRuby = true,
+  showRomaji = true,
 }: {
   lines: readonly (readonly TransliterationToken[])[];
   lang?: string;
+  showRuby?: boolean;
+  showRomaji?: boolean;
 }) {
   const romaji = lines.map((line) => joinRomaji(line)).join("\n");
+  if (!showRuby) {
+    return (
+      <p
+        dir="auto"
+        lang={lang}
+        className="text-2xl leading-normal wrap-break-word whitespace-pre-wrap"
+      >
+        {romaji}
+      </p>
+    );
+  }
   return (
     <>
       <p
@@ -59,7 +74,7 @@ export function TransliteratedText({
           </span>
         ))}
       </p>
-      {romaji.trim() !== "" && (
+      {showRomaji && romaji.trim() !== "" && (
         <p className="mt-2 text-sm wrap-break-word whitespace-pre-wrap text-muted-foreground">
           {romaji}
         </p>

@@ -27,7 +27,7 @@ import {
   getTranslationPresentation,
   translatorReducer,
 } from "./translator-state";
-import { useCopyFeedback } from "./use-clipboard-feedback";
+import { useCopyFeedback } from "@qzl/ui/hooks/use-clipboard-feedback";
 import { usePreferenceStore } from "./use-translation-preferences";
 import { useTranslationRequest } from "./use-translation-request";
 

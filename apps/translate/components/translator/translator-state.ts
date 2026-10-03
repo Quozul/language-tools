@@ -12,7 +12,7 @@ import {
   normalizeTranslationText,
   validateTranslationInput,
 } from "@/lib/translation-text";
-import type { Transliteration } from "@/lib/transliteration";
+import type { Transliteration } from "@qzl/ui/lib/transliteration";
 
 export type SourceLanguage = string;
 

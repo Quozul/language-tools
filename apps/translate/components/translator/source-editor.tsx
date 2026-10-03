@@ -2,15 +2,15 @@
 
 import { ClipboardPasteIcon, XIcon } from "lucide-react";
 import { type ChangeEvent, type CompositionEvent, useRef } from "react";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@qzl/ui/components/button";
+import { Textarea } from "@qzl/ui/components/textarea";
 import { MAX_TEXT_LENGTH } from "@/lib/translation-contract";
 import { displayedCharacterCount } from "@/lib/translation-text";
 import {
   useTranslatorActions,
   useTranslatorEditor,
 } from "./translator-context";
-import { usePasteFeedback } from "./use-clipboard-feedback";
+import { usePasteFeedback } from "@qzl/ui/hooks/use-clipboard-feedback";
 
 const LIMIT_LABEL = MAX_TEXT_LENGTH.toLocaleString("en-US");
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef } from "react";
-import { toast } from "@/components/ui/toast";
+import { toast } from "../components/toast";
 
 export interface CopyFeedback {
   copy: (text: string) => void;
@@ -27,7 +27,7 @@ export function useCopyFeedback(): CopyFeedback {
       .catch(() => {
         toast.add({
           title: "Could not copy",
-          description: "Select the transliteration and copy it manually.",
+          description: "Select the text and copy it manually.",
           type: "error",
         });
       });

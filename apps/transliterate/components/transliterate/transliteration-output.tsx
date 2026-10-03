@@ -1,16 +1,16 @@
 "use client";
 
 import { CopyIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@qzl/ui/components/button";
 import { languageLabel } from "@/lib/languages";
-import { joinRomaji, type TransliterationToken } from "@/lib/transliteration";
+import { joinRomaji, type TransliterationToken } from "@qzl/ui/lib/transliteration";
 import {
   useTransliterateActions,
   useTransliterateSession,
   useTransliterateSettings,
 } from "./transliterate-context";
-import { TransliteratedText } from "./transliterated-text";
-import { useCopyFeedback } from "./use-clipboard-feedback";
+import { TransliteratedText } from "@qzl/ui/components/transliterated-text";
+import { useCopyFeedback } from "@qzl/ui/hooks/use-clipboard-feedback";
 
 function joinSurface(lines: readonly (readonly TransliterationToken[])[]) {
   return lines

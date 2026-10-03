@@ -1,6 +1,6 @@
 import "server-only";
 import { z } from "zod";
-import type { Transliteration } from "../transliteration";
+import type { Transliteration } from "@qzl/ui/lib/transliteration";
 
 export const DEFAULT_TRANSLITERATE_URL = "http://localhost:8000";
 export const CAPABILITIES_TTL_MS = 5 * 60_000;

@@ -12,6 +12,7 @@ out/
 build/
 *.tsbuildinfo
 next-env.d.ts
+.turbo/
 
 # Caches
 .mypy_cache/

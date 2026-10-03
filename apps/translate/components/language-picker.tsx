@@ -10,7 +10,7 @@ import {
   ComboboxItem,
   ComboboxLabel,
   ComboboxList,
-} from "@/components/ui/combobox";
+} from "@qzl/ui/components/combobox";
 import {
   type DetectionOption,
   getLanguageGroups,

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { transliterationSchema } from "./transliteration";
+import { transliterationSchema } from "@qzl/ui/lib/transliteration";
 
 /** Keep in sync with MAX_TEXT_LENGTH of the qzl-transliterate service. */
 export const MAX_TEXT_LENGTH = 5000;

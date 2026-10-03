@@ -2,7 +2,9 @@
 # For Coolify deployments use docker-compose.coolify.yml instead.
 services:
   translate:
-    build: ./apps/translate
+    build:
+      context: .
+      dockerfile: apps/translate/Dockerfile
     image: qzl-translate:dev
     ports:
       - "3000:3000"
@@ -21,7 +23,9 @@ services:
     restart: unless-stopped
 
   transliterate-app:
-    build: ./apps/transliterate
+    build:
+      context: .
+      dockerfile: apps/transliterate/Dockerfile
     image: qzl-transliterate-app:dev
     ports:
       - "3001:3000"

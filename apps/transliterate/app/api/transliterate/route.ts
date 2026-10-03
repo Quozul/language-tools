@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { languageLabel } from "@/lib/languages";
-import { detectionClient } from "@/lib/server/detection-client";
+import { detectionClient } from "@qzl/ui/lib/server/detection-client";
 import { transliterateClient } from "@/lib/server/transliterate-client";
 import {
   AUTO_LANGUAGE,

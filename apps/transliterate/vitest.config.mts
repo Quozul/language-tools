@@ -3,13 +3,20 @@ import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   resolve: {
-    alias: {
-      "@": path.resolve(import.meta.dirname),
-      "server-only": path.resolve(
-        import.meta.dirname,
-        "tests/stubs/server-only.ts",
-      ),
-    },
+    alias: [
+      {
+        find: "@qzl/ui",
+        replacement: path.resolve(import.meta.dirname, "../../packages/ui/src"),
+      },
+      { find: "@", replacement: path.resolve(import.meta.dirname) },
+      {
+        find: "server-only",
+        replacement: path.resolve(
+          import.meta.dirname,
+          "tests/stubs/server-only.ts",
+        ),
+      },
+    ],
   },
   test: {
     environment: "node",

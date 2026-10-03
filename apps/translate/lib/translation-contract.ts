@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { languageByCode } from "@/lib/languages";
-import { transliterationSchema } from "@/lib/transliteration";
+import { transliterationSchema } from "@qzl/ui/lib/transliteration";
 import {
   DEFAULT_FAMILY,
   DEFAULT_PRESET,

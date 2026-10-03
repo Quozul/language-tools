@@ -1,7 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { languageByCode } from "@/lib/languages";
 import { DETECT_SOURCE } from "@/lib/models";
-import { detectionClient } from "@/lib/server/detection-client";
+import { detectionClient } from "@qzl/ui/lib/server/detection-client";
 import { ApiError } from "@/lib/server/errors";
 import { createCompletionFromEnvironment } from "@/lib/server/openai-adapter";
 import { translateRequest } from "@/lib/server/translation-service";

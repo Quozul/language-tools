@@ -4,7 +4,7 @@ import {
   type TranslationResponseBody,
   translationResponseBodySchema,
 } from "./translation-contract";
-import type { Transliteration } from "./transliteration";
+import type { Transliteration } from "@qzl/ui/lib/transliteration";
 
 export class TranslationFailure extends Error {}
 

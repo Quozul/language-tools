@@ -2,13 +2,13 @@
 
 import { ArrowLeftRightIcon } from "lucide-react";
 import { useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Kbd, KbdGroup } from "@/components/ui/kbd";
+import { Button } from "@qzl/ui/components/button";
+import { Kbd, KbdGroup } from "@qzl/ui/components/kbd";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
+} from "@qzl/ui/components/tooltip";
 import {
   useTranslatorActions,
   useTranslatorEditor,
