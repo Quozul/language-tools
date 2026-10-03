@@ -39,6 +39,8 @@ idna==3.20
     # via
     #   anyio
     #   httpx2
+lingua-language-detector==2.2.0
+    # via qzl-language-detection (pyproject.toml)
 opentelemetry-api==1.45.0
     # via fastapi
 packaging==26.3

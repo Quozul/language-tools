@@ -5,12 +5,13 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "qzl-language-detection"
 version = "0.1.0"
-description = "Language detection microservice (fastText / OpenLID-v3)"
+description = "Language detection microservice (fastText / OpenLID-v3 + lingua-py fallback)"
 requires-python = ">=3.13"
 dependencies = [
     "fastapi",
     "uvicorn[standard]",
     "fasttext-predict",
+    "lingua-language-detector",
     "huggingface-hub",
     "regex",
     "pycountry",
@@ -23,6 +24,7 @@ dev = [
     "httpx",
     "ruff",
     "mypy",
+    "types-regex",
     "pip-tools",
 ]
 

@@ -26,7 +26,7 @@ COPY src ./src
 EXPOSE 8000
 
 LABEL org.opencontainers.image.title="qzl-language-detection" \
-      org.opencontainers.image.description="Language detection service (fastText / OpenLID-v3)"
+      org.opencontainers.image.description="Language detection service (fastText / OpenLID-v3 + lingua-py fallback)"
 HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
   CMD python -c "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/v1/health').read().find(b'\"ready\":true')>=0 else 1)"
 
