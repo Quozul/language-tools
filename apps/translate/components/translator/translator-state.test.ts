@@ -530,9 +530,9 @@ describe("presentation selector", () => {
     expect(p.canRetry).toBe(false);
   });
 
-  it("announces completion without reading the whole text aloud", () => {
+  it("shows no status line when a translation completes without debug info", () => {
     const p = getTranslationPresentation({ status: "ready" }, success, false);
-    expect(p.statusMessage).toBe("Translation ready");
+    expect(p.statusMessage).toBe("");
     expect(p.isStale).toBe(false);
   });
 
@@ -566,7 +566,7 @@ describe("presentation selector", () => {
       attributed({ model: "Hy-MT2 (Balanced)", durationMs: 1, cached: true }),
       false,
     );
-    expect(p.statusMessage).toBe("Translation ready");
+    expect(p.statusMessage).toBe("");
   });
 
   it("leaves the status line empty while a new request runs over attributed output", () => {

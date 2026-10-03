@@ -355,14 +355,15 @@ export interface TranslationPresentation {
 const READY_FALLBACK_MESSAGE = "Translation ready";
 
 /**
- * The attribution line is debug information: it only appears when the
- * matching preference is on, otherwise completion stays generic.
+ * The attribution line is debug information: with the preference off, a
+ * completed translation shows no status line at all.
  */
 export function readyMessage(
   attribution: TranslationAttribution | null,
   debugInfo: boolean,
 ): string {
-  if (!debugInfo || attribution === null) return READY_FALLBACK_MESSAGE;
+  if (!debugInfo) return "";
+  if (attribution === null) return READY_FALLBACK_MESSAGE;
   const cachedSuffix = attribution.cached ? " (cached)" : "";
   return `Translated by ${attribution.model} in ${attribution.durationMs}ms${cachedSuffix}`;
 }

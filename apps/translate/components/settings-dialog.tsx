@@ -52,8 +52,7 @@ export function SettingsDialog({
         <DialogHeader>
           <DialogTitle>Settings</DialogTitle>
           <DialogDescription>
-            Choose the model family and size used for translations, and whether
-            to show debug info.
+            Configure the settings for the app.
           </DialogDescription>
         </DialogHeader>
         <div className="flex flex-col gap-4">
