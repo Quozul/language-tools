@@ -34,11 +34,13 @@ export function TransliteratedText({
   lang,
   showRuby = true,
   showRomaji = true,
+  trailing,
 }: {
   lines: readonly (readonly TransliterationToken[])[];
   lang?: string;
   showRuby?: boolean;
   showRomaji?: boolean;
+  trailing?: React.ReactNode;
 }) {
   const romaji = lines.map((line) => joinRomaji(line)).join("\n");
   if (!showRuby) {
@@ -49,6 +51,7 @@ export function TransliteratedText({
         className="text-2xl leading-normal wrap-break-word whitespace-pre-wrap"
       >
         {romaji}
+        {trailing}
       </p>
     );
   }
@@ -73,6 +76,7 @@ export function TransliteratedText({
             ))}
           </span>
         ))}
+        {trailing}
       </p>
       {showRomaji && romaji.trim() !== "" && (
         <p className="mt-2 text-sm wrap-break-word whitespace-pre-wrap text-muted-foreground">

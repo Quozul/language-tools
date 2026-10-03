@@ -36,6 +36,7 @@ export function TranslationOutput() {
               <TransliteratedText
                 lines={transliteration.lines}
                 lang={resultLanguage?.code}
+                trailing={presentation.busy ? <BouncingDots /> : undefined}
               />
             </div>
           ) : (
@@ -48,11 +49,6 @@ export function TranslationOutput() {
               {translated}
               {presentation.busy && <BouncingDots />}
             </p>
-          )}
-          {hasTransliteration && presentation.busy && (
-            <div className="text-muted-foreground">
-              <BouncingDots />
-            </div>
           )}
           <div className="mt-3 flex justify-end">
             <Button

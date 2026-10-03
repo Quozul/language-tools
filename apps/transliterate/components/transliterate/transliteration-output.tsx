@@ -29,16 +29,15 @@ export function TransliterationOutput() {
       aria-busy={busy}
     >
       {hasResult && (
-        <>
-          <div aria-label={`${resultLabel} transliteration`}>
-            <TransliteratedText
-              lines={result.lines}
-              lang={result.language}
-              showRuby={showRuby}
-              showRomaji={showRomaji}
-            />
-          </div>
-        </>
+        <div aria-label={`${resultLabel} transliteration`}>
+          <TransliteratedText
+            lines={result.lines}
+            lang={result.language}
+            showRuby={showRuby}
+            showRomaji={showRomaji}
+            trailing={busy ? <BouncingDots /> : undefined}
+          />
+        </div>
       )}
 
       {!hasResult && (
@@ -46,12 +45,6 @@ export function TransliterationOutput() {
           Transliteration
           {busy && <BouncingDots />}
         </p>
-      )}
-
-      {hasResult && busy && (
-        <div className="text-muted-foreground">
-          <BouncingDots />
-        </div>
       )}
 
       {errorMessage !== "" && (
