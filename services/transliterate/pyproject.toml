@@ -20,7 +20,7 @@ dependencies = [
 # pykakasi is believed GPL-licensed: cross-check tool only (docs 11.5).
 dev = [
     "pytest",
-    "httpx",
+    "httpx2",
     "ruff",
     "mypy",
     "cutlet",

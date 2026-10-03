@@ -5,12 +5,10 @@ from __future__ import annotations
 from functools import lru_cache
 from pathlib import Path
 
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_prefix="QZL_")
-
     max_text_length: int = 5000
     data_dir: Path = Path("data")
     jmdict_furigana_csv: Path | None = None

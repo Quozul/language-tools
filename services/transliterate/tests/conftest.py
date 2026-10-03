@@ -1,5 +1,5 @@
 """Shared fixtures. Dictionary/data-heavy fixtures skip cleanly unless
-QZL_DATA_DIR points at downloaded assets (docs 11.4, 14.2)."""
+DATA_DIR points at downloaded assets (docs 11.4, 14.2)."""
 
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ from ja.analyzer import Analyzer
 
 
 def data_dir() -> Path | None:
-    raw = os.environ.get("QZL_DATA_DIR")
+    raw = os.environ.get("DATA_DIR")
     if raw and Path(raw, "JmdictFurigana.json").exists():
         return Path(raw)
     default = Settings().data_dir

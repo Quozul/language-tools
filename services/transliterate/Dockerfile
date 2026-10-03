@@ -7,7 +7,7 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends build-essential mecab libmecab-dev \
     && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
-ENV QZL_DATA_DIR=/opt/qzl/data
+ENV DATA_DIR=/opt/qzl/data
 # Assets are downloaded by a stdlib-only script, so this layer is independent
 # of requirements.txt churn.
 COPY scripts scripts
@@ -33,9 +33,9 @@ WORKDIR /app
 RUN adduser --system --group qzl \
     && mkdir -p /app/data && chown -R qzl:qzl /app /opt/qzl
 USER qzl
-ENV QZL_DATA_DIR=/opt/qzl/data \
-    QZL_JMDICT_FURIGANA_CSV=/opt/qzl/data/JmdictFurigana.json \
-    QZL_JMDICT_FURIGANA_NAMES_CSV=/opt/qzl/data/JmnedictFurigana.json
+ENV DATA_DIR=/opt/qzl/data \
+    JMDICT_FURIGANA_CSV=/opt/qzl/data/JmdictFurigana.json \
+    JMDICT_FURIGANA_NAMES_CSV=/opt/qzl/data/JmnedictFurigana.json
 EXPOSE 8000
 LABEL org.opencontainers.image.title="qzl-transliterate" \
       org.opencontainers.image.description="Text annotation service (furigana + romaji), PoC: Japanese"
