@@ -18,6 +18,21 @@ services:
         condition: service_healthy
     restart: unless-stopped
 
+  transliterate-app:
+    build: ./apps/transliterate
+    image: qzl-transliterate-app:dev
+    expose:
+      - "3000"
+    environment:
+      TRANSLITERATE_API_URL: http://transliterate:8000
+      DETECT_API_URL: http://language-detection:8000
+    depends_on:
+      transliterate:
+        condition: service_healthy
+      language-detection:
+        condition: service_healthy
+    restart: unless-stopped
+
   transliterate:
     build: ./services/transliterate
     image: qzl-transliterate:dev
