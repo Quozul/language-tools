@@ -1,11 +1,11 @@
-# Local deployment: web apps are published on host ports 3000/3001.
-# For Coolify deployments use docker-compose.coolify.yml instead.
+# Coolify deployment: ports are internal only, Coolify's proxy handles routing.
+# For local deployments use docker-compose.yml instead.
 services:
   translate:
     build: ./apps/translate
     image: qzl-translate:dev
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
     environment:
       OPENAI_API_KEY: ${OPENAI_API_KEY}
       OPENAI_BASE_URL: ${OPENAI_BASE_URL:-http://host.docker.internal:9931/v1}
@@ -23,8 +23,8 @@ services:
   transliterate-app:
     build: ./apps/transliterate
     image: qzl-transliterate-app:dev
-    ports:
-      - "3001:3000"
+    expose:
+      - "3000"
     environment:
       TRANSLITERATE_API_URL: http://transliterate:8000
       DETECT_API_URL: http://language-detection:8000
