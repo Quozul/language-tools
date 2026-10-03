@@ -278,13 +278,25 @@ describe("translator reducer — swapping languages", () => {
 
   it("is offered only for an explicit source language", () => {
     expect(
-      canSwapLanguages({ ...BASE_INPUTS, source: "en", target: "fr" }),
+      canSwapLanguages({ ...BASE_INPUTS, source: "en", target: "fr" }, null),
     ).toBe(true);
-    expect(canSwapLanguages({ ...BASE_INPUTS, source: DETECT_SOURCE })).toBe(
-      false,
-    );
     expect(
-      canSwapLanguages({ ...BASE_INPUTS, source: "klingon", target: "fr" }),
+      canSwapLanguages({ ...BASE_INPUTS, source: DETECT_SOURCE }, null),
+    ).toBe(false);
+    expect(
+      canSwapLanguages(
+        { ...BASE_INPUTS, source: "klingon", target: "fr" },
+        null,
+      ),
+    ).toBe(false);
+  });
+
+  it("is offered for auto-detect once a language was detected", () => {
+    expect(
+      canSwapLanguages({ ...BASE_INPUTS, source: DETECT_SOURCE }, "es"),
+    ).toBe(true);
+    expect(
+      canSwapLanguages({ ...BASE_INPUTS, source: DETECT_SOURCE }, "klingon"),
     ).toBe(false);
   });
 
@@ -292,6 +304,22 @@ describe("translator reducer — swapping languages", () => {
     const before = translatedTo(DETECT_SOURCE, "fr", "hello", "bonjour");
     expect(swap(before)).toBe(before);
     expect(before.inputs.source).toBe(DETECT_SOURCE);
+  });
+
+  it("swaps auto-detect into the detected language", () => {
+    let state = type(createInitialState(), "hello");
+    state = translatorReducer(state, { type: "requestStarted", requestId: 1 });
+    state = translatorReducer(state, {
+      type: "requestSucceeded",
+      requestId: 1,
+      translation: "bonjour",
+      detected: "es",
+      inputs: { ...state.inputs },
+    });
+    const swappedState = swap(state);
+    expect(swappedState.inputs.source).toBe("en");
+    expect(swappedState.inputs.target).toBe("es");
+    expect(swappedState.inputs.text).toBe("bonjour");
   });
 
   it("keeps the draft when no finished translation exists yet", () => {

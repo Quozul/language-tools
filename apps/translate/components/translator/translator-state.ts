@@ -100,10 +100,18 @@ export function sameInputs(a: TranslatorInputs, b: TranslatorInputs): boolean {
   );
 }
 
-export function canSwapLanguages(inputs: TranslatorInputs): boolean {
+/**
+ * Swapping needs a concrete source: either an explicitly chosen one, or a
+ * language the server detected while the source was auto-detect.
+ */
+export function canSwapLanguages(
+  inputs: TranslatorInputs,
+  detectedLanguage: string | null,
+): boolean {
+  const source =
+    inputs.source === DETECT_SOURCE ? (detectedLanguage ?? "") : inputs.source;
   return (
-    inputs.source !== DETECT_SOURCE &&
-    languageByCode(inputs.source) !== undefined &&
+    languageByCode(source) !== undefined &&
     languageByCode(inputs.target) !== undefined
   );
 }
@@ -200,7 +208,13 @@ export function translatorReducer(
       return edited(state, { ...state.inputs, source: event.source });
 
     case "languagesSwapped": {
-      if (!canSwapLanguages(state.inputs)) return state;
+      if (!canSwapLanguages(state.inputs, state.detectedLanguage)) return state;
+      // Swapping away from auto-detect pins the detected language as the
+      // explicit source; the former target never becomes an auto-detect target.
+      const source =
+        state.inputs.source === DETECT_SOURCE
+          ? (state.detectedLanguage ?? "")
+          : state.inputs.source;
       // The finished translation becomes the new draft so the reverse
       // direction starts from the text that was just produced. While a result
       // is still in flight (or failed) the draft the user typed is kept.
@@ -213,7 +227,7 @@ export function translatorReducer(
         ...state.inputs,
         text,
         source: state.inputs.target,
-        target: state.inputs.source,
+        target: source,
       });
       // A swap is a deliberate action, not typing: translate without waiting.
       return withoutDebounce(next);

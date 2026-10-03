@@ -43,7 +43,7 @@ export interface TranslatorPreferencesSlice {
 
 export interface TranslatorEditorSlice {
   text: string;
-  /** False while the source is auto-detect: there is nothing to swap into the target. */
+  /** False while the source is auto-detect with nothing detected: there is nothing to swap into the target. */
   canSwap: boolean;
 }
 
@@ -287,7 +287,7 @@ export function useTranslatorController(): {
     [target, source, family, preset, frequent],
   );
 
-  const canSwap = canSwapLanguages(inputs);
+  const canSwap = canSwapLanguages(inputs, state.detectedLanguage);
   const editorSlice = useMemo<TranslatorEditorSlice>(
     () => ({ text: inputs.text, canSwap }),
     [inputs.text, canSwap],
