@@ -95,6 +95,11 @@ _SMALL_VOWEL = {"ァ": "a", "ィ": "i", "ゥ": "u", "ェ": "e", "ォ": "o"}
 _LONG_AFTER_CONSONANT = {"a": "ア", "i": "イ", "u": "ウ", "e": "イ", "o": "ウ"}
 
 
+def _is_all_kana(text: str) -> bool:
+    # Katakana block end (0x30FF) includes the long-vowel mark ー (0x30FC).
+    return bool(text) and all(0x3041 <= ord(c) <= 0x30FF for c in text)
+
+
 def _orthographic_hiragana(kana: str) -> str:
     """Kana spelling of the reading: expand the ー long-vowel mark (docs 5.4)."""
     out: list[str] = []
@@ -127,10 +132,17 @@ def resolve_readings(entries: list[AnalyzerEntry], lookup: FuriganaLookup) -> li
         source = ReadingSource.ANALYZER
 
         if entry.is_unknown:
-            reading = None
-            pron = None
             flags.add(Flag.UNKNOWN_WORD)
             confidence = Confidence.LOW
+            if _is_all_kana(entry.surface):
+                # Kana reads as written: an OOV kana word's reading and
+                # pronunciation are its surface, so romaji still gets built
+                # (stage 6) instead of falling back to the raw surface.
+                reading = entry.surface
+                pron = jaconv.hira2kata(entry.surface)
+            else:
+                reading = None
+                pron = None
         else:
             dict_entry = lookup.lookup(entry.surface)
             if dict_entry is not None and len(dict_entry.readings) > 1:
