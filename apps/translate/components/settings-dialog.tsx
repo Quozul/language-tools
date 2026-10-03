@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@qzl/ui/components/select";
-import { Toggle } from "@qzl/ui/components/toggle";
+import { Switch } from "@qzl/ui/components/switch";
 import {
   familyById,
   isModelPreset,
@@ -128,14 +128,12 @@ export function SettingsDialog({
                 Show model, duration, and cache state after each translation.
               </p>
             </div>
-            <Toggle
+            <Switch
               id="debug-info"
-              pressed={debugInfo}
-              onPressedChange={(pressed) => onDebugInfoChange(pressed)}
+              checked={debugInfo}
+              onCheckedChange={(checked) => onDebugInfoChange(checked)}
               aria-describedby="debug-info-detail"
-            >
-              {debugInfo ? "On" : "Off"}
-            </Toggle>
+            />
           </div>
         </div>
       </DialogContent>

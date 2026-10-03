@@ -16,10 +16,8 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:
-      transliterate:
-        condition: service_healthy
-      language-detection:
-        condition: service_healthy
+      - transliterate
+      - language-detection
     restart: unless-stopped
 
   transliterate-app:
@@ -33,10 +31,8 @@ services:
       TRANSLITERATE_API_URL: http://transliterate:8000
       DETECT_API_URL: http://language-detection:8000
     depends_on:
-      transliterate:
-        condition: service_healthy
-      language-detection:
-        condition: service_healthy
+      - transliterate
+      - language-detection
     restart: unless-stopped
 
   transliterate:

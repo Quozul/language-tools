@@ -1,36 +1,20 @@
-# fasttext-predict ships prebuilt wheels (unlike fasttext), so no compiler toolchain is needed.
+FROM alpine:3.20 AS downloader
+ARG MIRROR_URL=https://files.quozul.dev/qzl-mirror
+RUN wget -q -O /openlid-v3.bin "$MIRROR_URL/openlid-v3.bin" \
+    && printf "%s\n" "01ec5bbf85975c52673c52b3d8585bc4cc0e4eb4636ad5591467bab56b118821  /openlid-v3.bin" | sha256sum -c -
+
 FROM python:3.13-slim AS builder
-
-# Pre-download the model into the HF cache in its own layer, before the
-# dependency install, so requirements.txt churn does not re-download it.
-RUN pip install --no-cache-dir huggingface_hub \
-    && python -c \
-    "from huggingface_hub import hf_hub_download; hf_hub_download('HPLT/OpenLID-v3', 'openlid-v3.bin')"
-
 COPY requirements.txt .
-# --ignore-installed is required: the model-download layer above puts huggingface_hub (and its
-# click dependency) into the builder's site-packages, and pip would otherwise consider them
-# "already satisfied" and omit them from /install, breaking the final image.
-RUN pip install --no-cache-dir --prefix=/install --ignore-installed -r requirements.txt
+RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
 
 FROM python:3.13-slim
-
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libgomp1 \
     && rm -rf /var/lib/apt/lists/*
-
 COPY --from=builder /install /usr/local
-COPY --from=builder /root/.cache/huggingface /root/.cache/huggingface
-
+COPY --from=downloader /openlid-v3.bin /opt/qzl/models/openlid-v3.bin
 WORKDIR /app
-
 COPY src ./src
-
+ENV MODEL_PATH=/opt/qzl/models/openlid-v3.bin
 EXPOSE 8000
-
-LABEL org.opencontainers.image.title="qzl-language-detection" \
-      org.opencontainers.image.description="Language detection service (fastText / OpenLID-v3 + lingua-py fallback)"
-HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
-  CMD python -c "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/v1/health').read().find(b'\"ready\":true')>=0 else 1)"
-
 CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]

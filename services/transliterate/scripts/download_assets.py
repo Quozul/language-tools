@@ -7,11 +7,14 @@ Run at image build time and for local setup:
 from __future__ import annotations
 
 import hashlib
+import os
 import sys
 import urllib.request
 from pathlib import Path
 
-BASE_URL = "https://github.com/Doublevil/JmdictFurigana/releases/download/2.3.1%2B2026-09-25"
+# Self-hosted mirror (copyparty) is tried first; upstream GitHub is the fallback.
+MIRROR_BASE_URL = os.getenv("MIRROR_URL", "https://files.quozul.dev/qzl-mirror").rstrip("/")
+UPSTREAM_BASE_URL = "https://github.com/Doublevil/JmdictFurigana/releases/download/2.3.1%2B2026-09-25"
 
 ASSETS = {
     "JmdictFurigana.json": "2a8e206f0b171fa5acdce89e5f5798621b227175e5bfa2db6bd92fef63dd962e",
@@ -35,9 +38,17 @@ def main() -> int:
         if target.exists() and sha256(target) == expected:
             print(f"{name}: already present and verified")
             continue
-        url = f"{BASE_URL}/{name}"
-        print(f"{name}: downloading {url}")
-        urllib.request.urlretrieve(url, target)
+        for base in (MIRROR_BASE_URL, UPSTREAM_BASE_URL):
+            url = f"{base}/{name}"
+            print(f"{name}: downloading {url}")
+            try:
+                urllib.request.urlretrieve(url, target)
+                break
+            except OSError as exc:
+                print(f"{name}: {url} failed ({exc}), trying next source", file=sys.stderr)
+        else:
+            print(f"{name}: all sources failed", file=sys.stderr)
+            return 1
         actual = sha256(target)
         if actual != expected:
             print(f"{name}: CHECKSUM MISMATCH expected {expected} got {actual}", file=sys.stderr)

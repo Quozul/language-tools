@@ -1,5 +1,6 @@
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
+from os import environ
 from typing import Any
 
 import fasttext
@@ -56,7 +57,11 @@ class DetectResponse(BaseModel):
 def load_model() -> Any:
     global _model
     if _model is None:
-        model_path = hf_hub_download(repo_id=MODEL_REPO_ID, filename=MODEL_FILENAME)
+        model_path_env = environ.get("MODEL_PATH")
+        if model_path_env:
+            model_path = model_path_env
+        else:
+            model_path = hf_hub_download(repo_id=MODEL_REPO_ID, filename=MODEL_FILENAME)
         _model = fasttext.load_model(model_path)
     return _model
 
