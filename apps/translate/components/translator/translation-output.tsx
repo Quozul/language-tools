@@ -25,7 +25,7 @@ export function TranslationOutput() {
 
   return (
     <section
-      className="min-h-0 overflow-y-auto pt-3 md:pt-0"
+      className="h-full min-h-0 overflow-y-auto pt-3 md:pt-0"
       aria-label="Translation"
       aria-busy={presentation.busy}
     >
