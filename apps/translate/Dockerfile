@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1
 # Monorepo build: context is the repo root, so the @qzl/ui workspace package is
 # available. See https://pnpm.io/docker for the pnpm base image approach.
 FROM ghcr.io/pnpm/pnpm:12 AS build
@@ -14,8 +15,10 @@ RUN --mount=type=cache,id=pnpm,target=/var/cache/pnpm \
   pnpm install --store-dir /var/cache/pnpm --frozen-lockfile --filter "qzl-translate..."
 
 # Build only the translate app (source-exported @qzl/ui needs no build step).
+# The .next/cache mount persists the Next.js build cache across builds.
 COPY . .
-RUN pnpm --filter qzl-translate build
+RUN --mount=type=cache,id=next-translate,target=/app/apps/translate/.next/cache \
+  pnpm --filter qzl-translate build
 
 # Standalone output keeps the monorepo path layout: apps/translate/server.js.
 FROM node:26-slim AS runner
