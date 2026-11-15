@@ -25,6 +25,53 @@ def test_particles_stay_separate() -> None:
     assert result[1].join_with_previous is False
 
 
+# --- conjunctive te/で joins verb/adjective stems --------------------------
+
+
+def test_conjunctive_te_joins_verb_stem() -> None:
+    tokens = [
+        ttoken("待っ", "動詞,一般", "ma", "マッ"),
+        ttoken("て", "助詞,接続助詞", "te", "テ"),
+    ]
+    result = apply_word_spacing(tokens)
+    assert result[1].join_with_previous is True
+    assert result[1].romaji == "tte"  # geminated with it: matte, not "ma te"
+
+
+def test_conjunctive_te_joins_adjective_stem() -> None:
+    tokens = [
+        ttoken("暑く", "形容詞,一般", "atsuku", "アツク"),
+        ttoken("て", "助詞,接続助詞", "te", "テ"),
+    ]
+    result = apply_word_spacing(tokens)
+    assert result[1].join_with_previous is True
+    assert result[1].romaji == "te"
+
+
+def test_conjunctive_te_after_noun_stays_separate() -> None:
+    tokens = [
+        ttoken("猫", "名詞,普通名詞,一般", "neko", "ネコ"),
+        ttoken("て", "助詞,接続助詞", "te", "テ"),
+    ]
+    result = apply_word_spacing(tokens)
+    assert result[1].join_with_previous is False
+
+
+def test_other_conjunctions_and_homophone_particles_stay_separate() -> None:
+    tokens = [
+        ttoken("行っ", "動詞,非自立可能", "i", "イッ"),
+        ttoken("た", "助動詞", "ta", "タ"),
+        ttoken("けれど", "助詞,接続助詞", "keredo", "ケレド"),
+    ]
+    result = apply_word_spacing(tokens)
+    assert result[2].join_with_previous is False
+    instrumental = [
+        ttoken("水", "名詞,普通名詞,一般", "mizu", "ミズ"),
+        ttoken("で", "助詞,格助詞", "de", "デ"),
+    ]
+    assert apply_word_spacing(instrumental)[1].join_with_previous is False
+
+
 def test_suffixes_join_previous() -> None:
     tokens = [
         tok("田中", "名詞,固有名詞,人名,姓", "tanaka"),

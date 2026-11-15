@@ -138,7 +138,7 @@
       {"surface": "ちょっと", "reading": "ちょっと", "romaji": "chotto", "ruby": []},
       {"surface": "待っ", "reading": "まっ", "romaji": "ma",
        "ruby": [["待", "ま", "per-kanji"]]},
-      {"surface": "て", "reading": "て", "romaji": "te", "ruby": []},
+      {"surface": "て", "reading": "て", "romaji": "tte", "ruby": []},
       {"surface": "。", "reading": null, "romaji": ".", "ruby": []}
     ]
   },
