@@ -100,7 +100,7 @@ def _is_all_kana(text: str) -> bool:
     return bool(text) and all(0x3041 <= ord(c) <= 0x30FF for c in text)
 
 
-def _orthographic_hiragana(kana: str) -> str:
+def orthographic_hiragana(kana: str) -> str:
     """Kana spelling of the reading: expand the ー long-vowel mark (docs 5.4)."""
     out: list[str] = []
     for ch in kana:
@@ -147,7 +147,7 @@ def resolve_readings(entries: list[AnalyzerEntry], lookup: FuriganaLookup) -> li
             dict_entry = lookup.lookup(entry.surface)
             if dict_entry is not None and len(dict_entry.readings) > 1:
                 flags.add(Flag.HETERONYM)
-                hiragana = _orthographic_hiragana(reading or "")
+                hiragana = orthographic_hiragana(reading or "")
                 alternatives = tuple(
                     Alternative(reading=jaconv.kata2hira(r.reading))
                     for r in dict_entry.readings
@@ -163,7 +163,7 @@ def resolve_readings(entries: list[AnalyzerEntry], lookup: FuriganaLookup) -> li
                 reading=(
                     jaconv.kata2hira(reading)
                     if any(0x30A1 <= ord(c) <= 0x30FF for c in entry.surface)
-                    else _orthographic_hiragana(reading)
+                    else orthographic_hiragana(reading)
                 )
                 if reading
                 else None,

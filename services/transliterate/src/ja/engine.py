@@ -9,6 +9,7 @@ import jaconv
 from config import Settings
 from domain import EngineCapabilities, EngineOptions, EngineResult, Token
 from ja.analyzer import Analyzer
+from ja.expressions import merge_expressions
 from ja.lookup import FuriganaLookup
 from ja.normalize import normalize
 from ja.overrides import OverrideStore
@@ -80,7 +81,7 @@ class JapaneseEngine:
             return self._project(cached, options)
 
         normalized, warnings = normalize(text)
-        entries = self._analyzer.analyze(normalized)
+        entries = merge_expressions(self._analyzer.analyze(normalized), self._lookup)
         tokens = resolve_readings(entries, self._lookup)
         if self._overrides is not None:
             tokens = self._overrides.apply(tokens)

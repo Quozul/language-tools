@@ -87,9 +87,8 @@
     "text": "二十日が発売されます。",
     "reviewed": false,
     "tokens": [
-      {"surface": "二十", "reading": "はつ", "romaji": "hatsu",
-       "ruby": [["二十", "はつ", "group"]]},
-      {"surface": "日", "reading": "か", "romaji": "ka", "ruby": [["日", "か", "per-kanji"]]},
+      {"surface": "二十日", "reading": "はつか", "romaji": "hatsuka",
+       "ruby": [["二十日", "はつか", "group"]]},
       {"surface": "が", "reading": "が", "romaji": "ga", "ruby": []},
       {"surface": "発売", "reading": "はつばい", "romaji": "hatsubai",
        "ruby": [["発", "はつ", "per-kanji"], ["売", "ばい", "per-kanji"]]},
