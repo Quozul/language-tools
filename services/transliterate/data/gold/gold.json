@@ -169,5 +169,20 @@
       {"surface": "ます", "reading": "ます", "romaji": "masu", "ruby": []},
       {"surface": "。", "reading": null, "romaji": ".", "ruby": []}
     ]
+  },
+  {
+    "id": "geminate-001",
+    "category": "geminate",
+    "text": "大雨が降った。",
+    "reviewed": false,
+    "tokens": [
+      {"surface": "大雨", "reading": "おおあめ", "romaji": "ōame",
+       "ruby": [["大", "おお", "per-kanji"], ["雨", "あめ", "per-kanji"]]},
+      {"surface": "が", "reading": "が", "romaji": "ga", "ruby": []},
+      {"surface": "降っ", "reading": "ふっ", "romaji": "fu",
+       "ruby": [["降", "ふ", "per-kanji"]]},
+      {"surface": "た", "reading": "た", "romaji": "tta", "ruby": []},
+      {"surface": "。", "reading": null, "romaji": ".", "ruby": []}
+    ]
   }
 ]
