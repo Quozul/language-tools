@@ -17,7 +17,8 @@ function tokenNodes(token: TransliterationToken) {
       segment.text !== "" && segment.text !== segment.base ? (
         <ruby key={`${index}-${segment.base}`}>
           {segment.base}
-          <rt>{segment.text}</rt>
+          {/* Furigana is an annotation; keep it out of mouse text selections */}
+          <rt className="select-none">{segment.text}</rt>
         </ruby>
       ) : (
         segment.base
