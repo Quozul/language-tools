@@ -13,6 +13,7 @@ class Settings(BaseSettings):
     data_dir: Path = Path("data")
     jmdict_furigana_csv: Path | None = None
     jmdict_furigana_names_csv: Path | None = None
+    jmdict_kana_expressions_json: Path | None = None
     glossary_json: Path | None = None
     workers: int = 2
     cache_max_entries: int = 4096

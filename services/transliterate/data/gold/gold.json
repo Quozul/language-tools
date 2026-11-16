@@ -184,5 +184,21 @@
       {"surface": "た", "reading": "た", "romaji": "tta", "ruby": []},
       {"surface": "。", "reading": null, "romaji": ".", "ruby": []}
     ]
+  },
+  {
+    "id": "kana-001",
+    "category": "kana-expression",
+    "text": "猫とか犬とかいる。",
+    "reviewed": false,
+    "tokens": [
+      {"surface": "猫", "reading": "ねこ", "romaji": "neko",
+       "ruby": [["猫", "ねこ", "per-kanji"]]},
+      {"surface": "とか", "reading": "とか", "romaji": "toka", "ruby": []},
+      {"surface": "犬", "reading": "いぬ", "romaji": "inu",
+       "ruby": [["犬", "いぬ", "per-kanji"]]},
+      {"surface": "とか", "reading": "とか", "romaji": "toka", "ruby": []},
+      {"surface": "いる", "reading": "いる", "romaji": "iru", "ruby": []},
+      {"surface": "。", "reading": null, "romaji": ".", "ruby": []}
+    ]
   }
 ]

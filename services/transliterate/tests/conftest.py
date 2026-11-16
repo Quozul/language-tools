@@ -23,6 +23,12 @@ def data_dir() -> Path | None:
     return None
 
 
+def _kana_asset(directory: Path) -> Path | None:
+    """Optional supplementary asset: absent in minimal checkouts."""
+    path = directory / "JmdictKanaExpressions.json"
+    return path if path.exists() else None
+
+
 @pytest.fixture(scope="session")
 def analyzer() -> Analyzer:
     return Analyzer()
@@ -36,5 +42,6 @@ def engine(analyzer: Analyzer):
     settings = Settings(
         jmdict_furigana_csv=directory / "JmdictFurigana.json",
         jmdict_furigana_names_csv=directory / "JmnedictFurigana.json",
+        jmdict_kana_expressions_json=_kana_asset(directory),
     )
     return ja_engine.build(settings)

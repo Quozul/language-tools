@@ -9,7 +9,7 @@ import jaconv
 from config import Settings
 from domain import EngineCapabilities, EngineOptions, EngineResult, Token
 from ja.analyzer import Analyzer
-from ja.expressions import merge_expressions
+from ja.expressions import KanaExpressions, merge_expressions
 from ja.lookup import FuriganaLookup
 from ja.normalize import normalize
 from ja.overrides import OverrideStore
@@ -41,12 +41,14 @@ class JapaneseEngine:
         analyzer: Analyzer,
         lookup: FuriganaLookup,
         overrides: OverrideStore | None,
+        kana: KanaExpressions | None = None,
         cache_max_entries: int = 4096,
         dictionary_info: str = "unknown-dictionary",
     ) -> None:
         self._analyzer = analyzer
         self._lookup = lookup
         self._overrides = overrides
+        self._kana = kana
         self._cache_max = cache_max_entries
         self._cache: dict[tuple[str, EngineOptions], EngineResult] = {}
         self._dictionary_info = dictionary_info
@@ -81,7 +83,7 @@ class JapaneseEngine:
             return self._project(cached, options)
 
         normalized, warnings = normalize(text)
-        entries = merge_expressions(self._analyzer.analyze(normalized), self._lookup)
+        entries = merge_expressions(self._analyzer.analyze(normalized), self._lookup, self._kana)
         tokens = resolve_readings(entries, self._lookup)
         if self._overrides is not None:
             tokens = self._overrides.apply(tokens)
@@ -145,11 +147,16 @@ def build(settings: Settings) -> JapaneseEngine:
         lookup.load_common(settings.jmdict_furigana_csv)
     if settings.jmdict_furigana_names_csv is not None:
         lookup.load_names(settings.jmdict_furigana_names_csv)
+    kana: KanaExpressions | None = None
+    if settings.jmdict_kana_expressions_json is not None:
+        kana = KanaExpressions()
+        kana.load(settings.jmdict_kana_expressions_json)
     overrides = OverrideStore.from_json(settings.glossary_json) if settings.glossary_json else None
     return JapaneseEngine(
         analyzer=analyzer,
         lookup=lookup,
         overrides=overrides,
+        kana=kana,
         cache_max_entries=settings.cache_max_entries,
         dictionary_info=analyzer.dictionary_info,
     )
